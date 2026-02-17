@@ -12,11 +12,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write src/",
-    "type-check": "tsc --noEmit"
+    "lint": "next lint"
   },
   "dependencies": {
     "react": "^18.2.0",
