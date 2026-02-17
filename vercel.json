@@ -7,10 +7,5 @@
     "NEXT_PUBLIC_SITE_URL": "https://saurabh-singh-portfolio.vercel.app"
   },
   "alias": ["saurabh-singh-portfolio.vercel.app"],
-  "regions": ["sfo1"],
-  "functions": {
-    "api/**/*.ts": {
-      "maxDuration": 300
-    }
-  }
+  "regions": ["sfo1"]
 }
