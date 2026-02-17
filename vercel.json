@@ -6,6 +6,5 @@
   "env": {
     "NEXT_PUBLIC_SITE_URL": "https://saurabh-singh-portfolio.vercel.app"
   },
-  "alias": ["saurabh-singh-portfolio.vercel.app"],
   "regions": ["sfo1"]
 }
