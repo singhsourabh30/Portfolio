@@ -2,5 +2,15 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "env": {
+    "NEXT_PUBLIC_SITE_URL": "https://saurabh-singh-portfolio.vercel.app"
+  },
+  "alias": ["saurabh-singh-portfolio.vercel.app"],
+  "regions": ["sfo1"],
+  "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 300
+    }
+  }
 }
