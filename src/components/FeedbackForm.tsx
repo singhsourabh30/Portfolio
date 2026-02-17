@@ -8,20 +8,48 @@ export default function FeedbackForm() {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Log feedback (in real app, send to backend)
-    console.log('Feedback:', { rating, feedback });
-    
-    setSubmitted(true);
-    setTimeout(() => {
-      setRating(0);
-      setFeedback('');
-      setSubmitted(false);
-      setIsOpen(false);
-    }, 2000);
+    if (!feedback.trim()) {
+      setError('Please enter feedback');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating, feedback }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to submit feedback');
+        setLoading(false);
+        return;
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setRating(0);
+        setFeedback('');
+        setSubmitted(false);
+        setIsOpen(false);
+        setError('');
+      }, 2000);
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Feedback error:', err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -92,12 +120,18 @@ export default function FeedbackForm() {
                     />
                   </div>
 
+                  {error && (
+                    <div className="bg-red-500/20 border border-red-500 rounded px-3 py-2 text-red-300 text-xs">
+                      {error}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    disabled={!feedback.trim()}
+                    disabled={!feedback.trim() || loading}
                     className="w-full py-2 bg-gradient-to-r from-neon-blue to-neon-cyan text-dark-bg font-bold rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   >
-                    Submit
+                    {loading ? 'Submitting...' : 'Submit'}
                   </button>
                 </form>
               )}

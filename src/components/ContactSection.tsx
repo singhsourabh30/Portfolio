@@ -13,21 +13,44 @@ export default function ContactSection() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setError('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you'd send this to an API
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to send message');
+        setLoading(false);
+        return;
+      }
+
+      setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
-      setSubmitted(false);
-    }, 3000);
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Contact form error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -157,11 +180,18 @@ export default function ContactSection() {
                 className="w-full bg-dark-bg/50 border border-neon-blue/20 rounded px-4 py-3 text-gray-100 placeholder-gray-500 focus:border-neon-cyan focus:outline-none transition-colors resize-none"
               />
 
+              {error && (
+                <div className="bg-red-500/20 border border-red-500 rounded px-4 py-3 text-red-300 text-sm">
+                  {error}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-neon-blue to-neon-cyan text-dark-bg font-bold rounded-lg hover:shadow-lg hover:shadow-neon-blue/50 transition-all"
+                disabled={loading}
+                className="w-full py-3 bg-gradient-to-r from-neon-blue to-neon-cyan text-dark-bg font-bold rounded-lg hover:shadow-lg hover:shadow-neon-blue/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                SEND MESSAGE
+                {loading ? 'SENDING...' : 'SEND MESSAGE'}
               </button>
             </form>
           )}
