@@ -3,8 +3,11 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
+  "projectSettings": {
+    "framework": "nextjs"
+  },
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://saurabh-singh-portfolio.vercel.app"
+    "NEXT_PUBLIC_SITE_URL": "https://saurabh.singh.portfolio.vercel.app"
   },
   "regions": ["sfo1"]
 }
