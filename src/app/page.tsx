@@ -8,8 +8,10 @@ import ExperienceSection from '@/components/ExperienceSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import CertificationsSection from '@/components/CertificationsSection';
 import AboutSection from '@/components/AboutSection';
+import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
-import AIAssistant from '@/components/AIAssistant';
+import VoiceAssistant from '@/components/VoiceAssistant';
+import FeedbackForm from '@/components/FeedbackForm';
 
 export default function Home() {
   return (
@@ -68,11 +70,16 @@ export default function Home() {
           <AboutSection />
         </section>
 
+        <section id="contact" className="scroll-mt-16">
+          <ContactSection />
+        </section>
+
         <Footer />
       </div>
 
-      {/* AI Assistant */}
-      <AIAssistant />
+      {/* Voice Assistant & Feedback */}
+      <VoiceAssistant />
+      <FeedbackForm />
     </main>
   );
 }
